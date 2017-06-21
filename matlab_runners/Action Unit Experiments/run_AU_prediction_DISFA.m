@@ -6,14 +6,13 @@ else
     executable = '"../../x64/Release/FeatureExtraction.exe"';
 end
 
-if(exist('D:/Datasets/DISFA/Videos_LeftCamera/', 'file'))   
-    DISFA_dir = 'D:/Datasets/DISFA/Videos_LeftCamera/';  
+if(exist('../../Databases/DISFA/Videos_LeftCamera'))   
+    DISFA_dir = '../../Databases/DISFA/Videos_LeftCamera';  
 else
     DISFA_dir = '/multicomp/datasets/face_datasets/DISFA/Videos_LeftCamera/';
 end
 
-
-videos = dir([DISFA_dir, '*.avi']);
+videos = dir(fullfile(DISFA_dir, '*.avi'));
 
 output = 'out_DISFA/';
 if(~exist(output, 'file'))
@@ -23,7 +22,7 @@ end
 %%
 % Do it in parrallel for speed (replace the parfor with for if no parallel
 % toolbox is available)
-parfor v = 1:numel(videos)
+for v = 1:numel(videos)
    
     vid_file = [DISFA_dir, videos(v).name];
     
