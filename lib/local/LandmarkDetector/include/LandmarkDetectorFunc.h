@@ -55,10 +55,7 @@ namespace LandmarkDetector
 	// Optionally can provide a bounding box from which to start tracking
 	//================================================================================================================
 	bool DetectLandmarksInVideo(const cv::Mat_<uchar> &grayscale_image, CLNF& clnf_model, FaceModelParameters& params);
-	bool DetectLandmarksInVideo(const cv::Mat_<uchar> &grayscale_image, const cv::Mat_<float> &depth_image, CLNF& clnf_model, FaceModelParameters& params);
-
 	bool DetectLandmarksInVideo(const cv::Mat_<uchar> &grayscale_image, const cv::Rect_<double> bounding_box, CLNF& clnf_model, FaceModelParameters& params);
-	bool DetectLandmarksInVideo(const cv::Mat_<uchar> &grayscale_image, const cv::Mat_<float> &depth_image, const cv::Rect_<double> bounding_box, CLNF& clnf_model, FaceModelParameters& params);
 
 	//================================================================================================================
 	// Landmark detection in image, need to provide an image and optionally CLNF model together with parameters (default values work well)
@@ -68,28 +65,16 @@ namespace LandmarkDetector
 	// Providing a bounding box
 	bool DetectLandmarksInImage(const cv::Mat_<uchar> &grayscale_image, const cv::Rect_<double> bounding_box, CLNF& clnf_model, FaceModelParameters& params);
 
-	//================================================
-	// CLM-Z versions
-	bool DetectLandmarksInImage(const cv::Mat_<uchar> &grayscale_image, const cv::Mat_<float> depth_image, CLNF& clnf_model, FaceModelParameters& params);
-	bool DetectLandmarksInImage(const cv::Mat_<uchar> &grayscale_image, const cv::Mat_<float> depth_image, const cv::Rect_<double> bounding_box, CLNF& clnf_model, FaceModelParameters& params);
-
 	//================================================================
 	// Helper function for getting head pose from CLNF parameters
 
-	// Return the current estimate of the head pose, this can be either in camera or world coordinate space
+	// Return the current estimate of the head pose in world coordinates with camera at origin (0,0,0)
 	// The format returned is [Tx, Ty, Tz, Eul_x, Eul_y, Eul_z]
-	cv::Vec6d GetPoseCamera(const CLNF& clnf_model, double fx, double fy, double cx, double cy);
-	cv::Vec6d GetPoseWorld(const CLNF& clnf_model, double fx, double fy, double cx, double cy);
-	
-	// Getting a head pose estimate from the currently detected landmarks, with appropriate correction for perspective
-	// This is because rotation estimate under orthographic assumption is only correct close to the centre of the image
-	// These methods attempt to correct for that
-	// The pose returned can be either in camera or world coordinates
-	// The format returned is [Tx, Ty, Tz, Eul_x, Eul_y, Eul_z]
-	cv::Vec6d GetCorrectedPoseCamera(const CLNF& clnf_model, double fx, double fy, double cx, double cy);
-	cv::Vec6d GetCorrectedPoseWorld(const CLNF& clnf_model, double fx, double fy, double cx, double cy);
+	cv::Vec6d GetPose(const CLNF& clnf_model, float fx, float fy, float cx, float cy);
 
-	//===========================================================================
+	// Return the current estimate of the head pose in world coordinates with camera at origin (0,0,0), but with rotation representing if the head is looking at the camera
+	// The format returned is [Tx, Ty, Tz, Eul_x, Eul_y, Eul_z]
+	cv::Vec6d GetPoseWRTCamera(const CLNF& clnf_model, float fx, float fy, float cx, float cy);
 
 }
 #endif

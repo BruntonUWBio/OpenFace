@@ -93,16 +93,13 @@ public:
 	dlib::frontal_face_detector face_detector_HOG;
 
 
-	// Validate if the detected landmarks are correct using an SVR regressor
+	// Validate if the detected landmarks are correct using a predictor on detected landmarks
 	DetectionValidator	landmark_validator; 
 
-	// Indicating if landmark detection succeeded (based on SVR validator)
+	// Indicating if landmark detection succeeded (based on detection validator)
 	bool				detection_success; 
 
-	// Indicating if the tracking has been initialised (for video based tracking)
-	bool				tracking_initialised;
-
-	// The actual output of the regressor (-1 is perfect detection 1 is worst detection)
+	//  Representing how confident we are that tracking succeeds (0 - complete failure, 1 - perfect success)
 	double				detection_certainty; 
 
 	// Indicator if eye model is there for eye detection
@@ -130,7 +127,7 @@ public:
 
 	// Useful when resetting or initialising the model closer to a specific location (when multiple faces are present)
 	cv::Point_<double> preference_det;
-
+	
 	// A default constructor
 	CLNF();
 
@@ -153,7 +150,7 @@ public:
 	CLNF & operator= (const CLNF&& other);
 
 	// Does the actual work - landmark detection
-	bool DetectLandmarks(const cv::Mat_<uchar> &image, const cv::Mat_<float> &depth, FaceModelParameters& params);
+	bool DetectLandmarks(const cv::Mat_<uchar> &image, FaceModelParameters& params);
 	
 	// Gets the shape of the current detected landmarks in camera space (given camera calibration)
 	// Can only be called after a call to DetectLandmarksInVideo or DetectLandmarksInImage
@@ -161,6 +158,9 @@ public:
 
 	// A utility bounding box function
 	cv::Rect_<double> GetBoundingBox() const;
+
+	// Get the currently non-self occluded landmarks
+	cv::Mat_<int> GetVisibilities() const;
 
 	// Reset the model (useful if we want to completelly reinitialise, or we want to track another video)
 	void Reset();
@@ -174,13 +174,22 @@ public:
 	// Helper reading function
 	void Read_CLNF(string clnf_location);
 	
+	// Allows to set initialization accross hierarchical models as well
+	bool IsInitialized() const { return tracking_initialised; }
+	void SetInitialized(bool initialized);
+	void SetDetectionSuccess(bool detection_success);
+
 private:
+
+
+	// Indicating if the tracking has been initialised (for video based tracking)
+	bool				tracking_initialised;
 
 	// the speedup of RLMS using precalculated KDE responses (described in Saragih 2011 RLMS paper)
 	map<int, cv::Mat_<float> >		kde_resp_precalc;
 
 	// The model fitting: patch response computation and optimisation steps
-    bool Fit(const cv::Mat_<uchar>& intensity_image, const cv::Mat_<float>& depth_image, const std::vector<int>& window_sizes, const FaceModelParameters& parameters);
+    bool Fit(const cv::Mat_<uchar>& intensity_image, const std::vector<int>& window_sizes, const FaceModelParameters& parameters);
 
 	// Mean shift computation that uses precalculated kernel density estimators (the one actually used)
 	void NonVectorisedMeanShift_precalc_kde(cv::Mat_<float>& out_mean_shifts, const vector<cv::Mat_<float> >& patch_expert_responses, const cv::Mat_<float> &dxs, const cv::Mat_<float> &dys, int resp_size, float a, int scale, int view_id, map<int, cv::Mat_<float> >& mean_shifts);
@@ -188,9 +197,6 @@ private:
 	// The actual model optimisation (update step), returns the model likelihood
     double NU_RLMS(cv::Vec6d& final_global, cv::Mat_<double>& final_local, const vector<cv::Mat_<float> >& patch_expert_responses, const cv::Vec6d& initial_global, const cv::Mat_<double>& initial_local,
 		          const cv::Mat_<double>& base_shape, const cv::Matx22d& sim_img_to_ref, const cv::Matx22f& sim_ref_to_img, int resp_size, int view_idx, bool rigid, int scale, cv::Mat_<double>& landmark_lhoods, const FaceModelParameters& parameters);
-
-	// Removing background image from the depth
-	bool RemoveBackground(cv::Mat_<float>& out_depth_image, const cv::Mat_<float>& depth_image);
 
 	// Generating the weight matrix for the Weighted least squares
 	void GetWeightMatrix(cv::Mat_<float>& WeightMatrix, int scale, int view_id, const FaceModelParameters& parameters);

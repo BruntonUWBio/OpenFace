@@ -1,12 +1,4 @@
-exe/Recording/x64/
-exe/FaceLandmarkVidMulti/x64/
-lib/3rdParty/dlib/x64/
-lib/local/FaceAnalyser/x64/
-lib/local/LandmarkDetector/x64/
-exe/FaceLandmarkImg/x64/
-exe/FaceLandmarkVid/x64/
-exe/FeatureExtraction/x64/
-x64/Release/
+/x64/Release/
 OpenFace.VC.opendb
 OpenFace.sdf
 matlab_runners/Action Unit Experiments/AU_preds/
@@ -19,33 +11,87 @@ matlab_runners/Feature Point Experiments/out_wild_svr_wild/
 matlab_runners/Feature Point Experiments/yt_features/
 matlab_runners/Feature Point Experiments/yt_features_clm/
 matlab_runners/Gaze Experiments/mpii_out/
-build/
 Release/AU_predictors/
-Release/
+/Debug/
+/Release/
 exe/Recording/recording/
 ipch/
 exe/FeatureExtraction/out_bp4d/
 matlab_runners/Action Unit Experiments/out_bp4d/
 matlab_runners/Action Unit Experiments/out_SEMAINE/
-x64/Debug/
+/x64/Debug/
 matlab_runners/Action Unit Experiments/out_unbc/
 matlab_runners/Action Unit Experiments/out_bosph/
 matlab_runners/Action Unit Experiments/out_DISFA/
 matlab_runners/Action Unit Experiments/out_fera/
 matlab_runners/Demos/output_features_seq/
 matlab_runners/Demos/output_features_vid/
-/Debug/
-/Release/
+exe/FaceLandmarkImg/Release/
 exe/FaceLandmarkImg/Debug/
+exe/FaceLandmarkVid/Release/
 exe/FaceLandmarkVid/Debug/
+exe/FaceLandmarkVidMulti/Release/
 exe/FaceLandmarkVidMulti/Debug/
 exe/FeatureExtraction/Debug/
+exe/FeatureExtraction/Release/
+exe/Recording/Release/
 exe/Recording/Debug/
+exe/Recording/x64/
+exe/FaceLandmarkVidMulti/x64/
+exe/FaceLandmarkImg/x64/
+exe/FaceLandmarkVid/x64/
+exe/FeatureExtraction/x64/
+gui/OpenFaceOffline/bin/
+gui/OpenFaceOffline/obj/
+gui/OpenFaceDemo/obj/
+gui/HeadPose-live/obj/
+lib/3rdParty/dlib/Release/
+lib/3rdParty/dlib/Debug/
+lib/local/CamCom/Release/
+lib/local/CamCom/Debug/
+lib/local/CamCom/x64/
+lib/local/CppInerop/x64/
+lib/local/CppInerop/Release/
+lib/local/CppInerop/Debug/
+lib/local/CppInerop/x64/Debug/
+lib/local/FaceAnalyser/Release/
+lib/local/FaceAnalyser/Debug/
+lib/local/LandmarkDetector/Release/
+lib/local/LandmarkDetector/Debug/
+lib/3rdParty/dlib/x64/
+lib/local/FaceAnalyser/x64/
+lib/local/LandmarkDetector/x64/
+lib/local/GazeAnalyser/x64/
+lib/local/GazeAnalyser/Release/
+lib/local/GazeAnalyser/Debug/
+OpenFaceDemo/bin/
+OpenFaceDemo/obj/
+Debug/model/
+*.suo
 lib/3rdParty/dlib/Debug/
 lib/local/FaceAnalyser/Debug/
 lib/local/LandmarkDetector/Debug/
 matlab_runners/Head Pose Experiments/experiments/biwi_out/
 matlab_runners/Head Pose Experiments/experiments/bu_out/
 matlab_runners/Head Pose Experiments/experiments/ict_out/
-
 OpenFace\.VC\.db
+matlab_version/face_validation/vlfeat-0.9.20/
+matlab_version/face_validation/trained/intermediate/
+lib/local/GazeAnalyser/x64/
+lib/local/Utilities/x64/
+exe/FeatureExtraction/processed/
+exe/FaceLandmarkImg/processed/
+exe/FeatureExtraction/processed_features/
+matlab_runners/Demos/processed_features/
+*.db
+exe/releases/OpenFace_0.3.0_win_x64/
+exe/releases/OpenFace_0.3.0_win_x86/
+lib/3rdParty/CameraEnumerator/x64/
+lib/local/Utilities/Debug/
+lib/3rdParty/CameraEnumerator/Debug/
+exe/releases/OpenFace_0.4.0_win_x64/
+exe/releases/OpenFace_0.4.0_win_x86/
+lib/3rdParty/CameraEnumerator/Release/
+lib/local/Utilities/Release/
+exe/FaceLandmarkVidMulti/processed/
+matlab_runners/Demos/processed/multi_face_aligned/

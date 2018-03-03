@@ -6,18 +6,27 @@ else
     executable = '"../../x64/Release/FeatureExtraction.exe"';
 end
 
+<<<<<<< HEAD
 if(exist('../../Databases/DISFA/Videos_LeftCamera'))   
     DISFA_dir = '../../Databases/DISFA/Videos_LeftCamera';  
 else
+=======
+if(exist('D:/Datasets/DISFA/Videos_LeftCamera/', 'file'))   
+    DISFA_dir = 'D:/Datasets/DISFA/Videos_LeftCamera/';  
+elseif(exist('E:/Datasets/DISFA/Videos_LeftCamera/', 'file'))   
+    DISFA_dir = 'E:/Datasets/DISFA/Videos_LeftCamera/';  
+elseif(exist('/multicomp/datasets/face_datasets/DISFA/Videos_LeftCamera/', 'file'))
+>>>>>>> fedbbf9b2f55582e32d4e8b2268b2a69a7f39f01
     DISFA_dir = '/multicomp/datasets/face_datasets/DISFA/Videos_LeftCamera/';
+elseif(exist('/media/tadas/2EBEA130BEA0F20F/datasets/DISFA/', 'file'))
+    DISFA_dir = '/media/tadas/2EBEA130BEA0F20F/datasets/DISFA/Videos_LeftCamera/';
+else
+    fprintf('Cannot find DIFA location\n');
 end
 
 videos = dir(fullfile(DISFA_dir, '*.avi'));
 
 output = 'out_DISFA/';
-if(~exist(output, 'file'))
-    mkdir(output);
-end
 
 %%
 % Do it in parrallel for speed (replace the parfor with for if no parallel
@@ -26,11 +35,7 @@ for v = 1:numel(videos)
    
     vid_file = [DISFA_dir, videos(v).name];
     
-    [~, name, ~] = fileparts(vid_file);
-    
-    % where to output tracking results
-    output_file = [output name '_au.txt'];
-    command = [executable ' -f "' vid_file '" -of "' output_file '" -q -no2Dfp -no3Dfp -noMparams -noPose -noGaze'];
+    command = sprintf('%s -f "%s" -out_dir "%s" -aus ', executable, vid_file, output);
         
     if(isunix)
         unix(command, '-echo');
@@ -67,30 +72,32 @@ for i=1:numel(label_folders)
     label_ids = cat(1, label_ids, repmat(user_id, size(labels,1),1));
 end
 
-preds_files = dir([prediction_dir, '*SN*.txt']);
+preds_files = dir([prediction_dir, '*SN*.csv']);
 
 tab = readtable([prediction_dir, preds_files(1).name]);
 column_names = tab.Properties.VariableNames;
 aus_pred_int = [];
-for c=3:numel(column_names)
+au_inds_in_file = [];
+for c=1:numel(column_names)
     if(strfind(column_names{c}, '_r') > 0)
         aus_pred_int = cat(1, aus_pred_int, int32(str2num(column_names{c}(3:end-2))));
+        au_inds_in_file = cat(1, au_inds_in_file, c);
     end
 end
     
 inds_au = zeros(numel(AUs_disfa),1);
 
 for ind=1:numel(AUs_disfa)  
-    inds_au(ind) = find(aus_pred_int==AUs_disfa(ind));
+    inds_au(ind) = au_inds_in_file(aus_pred_int==AUs_disfa(ind));
 end
 preds_all = zeros(size(labels_all,1), numel(AUs_disfa));
 
 for i=1:numel(preds_files)
    
     preds = dlmread([prediction_dir, preds_files(i).name], ',', 1, 0);
-    preds = preds(:,5:5+numel(aus_pred_int)-1);
+    %preds = preds(:,5:5+numel(aus_pred_int)-1);
 
-    user_id = str2num(preds_files(i).name(end - 14:end-12));
+    user_id = str2num(preds_files(i).name(end - 11:end-9));
     rel_ids = label_ids == user_id;
     preds_all(rel_ids,:) = preds(:,inds_au);
 end
