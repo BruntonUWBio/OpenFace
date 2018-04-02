@@ -6,11 +6,17 @@ else
     executable = '"../../x64/Release/FeatureExtraction.exe"';
 end
 
+<<<<<<< HEAD
+if(exist('../../Databases/DISFA/Videos_LeftCamera'))   
+    DISFA_dir = '../../Databases/DISFA/Videos_LeftCamera';  
+else
+=======
 if(exist('D:/Datasets/DISFA/Videos_LeftCamera/', 'file'))   
     DISFA_dir = 'D:/Datasets/DISFA/Videos_LeftCamera/';  
 elseif(exist('E:/Datasets/DISFA/Videos_LeftCamera/', 'file'))   
     DISFA_dir = 'E:/Datasets/DISFA/Videos_LeftCamera/';  
 elseif(exist('/multicomp/datasets/face_datasets/DISFA/Videos_LeftCamera/', 'file'))
+>>>>>>> fedbbf9b2f55582e32d4e8b2268b2a69a7f39f01
     DISFA_dir = '/multicomp/datasets/face_datasets/DISFA/Videos_LeftCamera/';
 elseif(exist('/media/tadas/2EBEA130BEA0F20F/datasets/DISFA/', 'file'))
     DISFA_dir = '/media/tadas/2EBEA130BEA0F20F/datasets/DISFA/Videos_LeftCamera/';
@@ -18,15 +24,14 @@ else
     fprintf('Cannot find DIFA location\n');
 end
 
-
-videos = dir([DISFA_dir, '*.avi']);
+videos = dir(fullfile(DISFA_dir, '*.avi'));
 
 output = 'out_DISFA/';
 
 %%
 % Do it in parrallel for speed (replace the parfor with for if no parallel
 % toolbox is available)
-parfor v = 1:numel(videos)
+for v = 1:numel(videos)
    
     vid_file = [DISFA_dir, videos(v).name];
     
