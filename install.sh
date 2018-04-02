@@ -43,8 +43,8 @@ cd opencv-3.4.0
 mkdir -p build
 cd build
 echo "Installing OpenCV..."
-cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D WITH_CUDA=OFF -D BUILD_SHARED_LIBS=OFF ..
-make -j4
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D WITH_CUDA=ON -D BUILD_SHARED_LIBS=OFF ..
+make -j8
 sudo make install
 cd ../..
 rm 3.4.0.zip
@@ -61,6 +61,6 @@ echo "Installing OpenFace..."
 mkdir -p build
 cd build
 cmake -D CMAKE_BUILD_TYPE=RELEASE ..
-make
+make -j8
 cd ..
 echo "OpenFace successfully installed."
